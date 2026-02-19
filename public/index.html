@@ -51,8 +51,8 @@
     fetch(`/proxy?url=${encodeURIComponent(url)}`)
       .then(res => res.text())
       .then(data => {
-        // Display raw response or handle accordingly
-        alert('Proxy request sent! Check console for response.');
+        // You can handle the response here
+        alert('Request sent! Check console for response.');
         console.log(data);
       })
       .catch(err => alert('Error:', err));
