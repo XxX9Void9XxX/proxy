@@ -4,7 +4,7 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Proxy endpoint: all requests to /api proxy to target URL
+// Proxy requests to /proxy?url=TARGET_URL
 app.use('/proxy', (req, res, next) => {
   const targetUrl = req.query.url;
   if (!targetUrl) {
