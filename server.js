@@ -15,7 +15,6 @@ app.get('/render', async (req, res) => {
     const page = await browser.newPage();
     await page.goto(url, { waitUntil: 'networkidle2' });
 
-    // Get the full page content after JS execution
     const content = await page.content();
 
     await browser.close();
