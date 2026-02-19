@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SSP Proxy</title>
+<style>
+  body {
+    background-color: #000;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+  }
+  h1 {
+    color: purple;
+  }
+  input[type="text"] {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    width: 300px;
+    margin-bottom: 10px;
+  }
+  button {
+    padding: 10px 20px;
+    background-color: purple;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: violet;
+  }
+</style>
+</head>
+<body>
+<h1>SSP Proxy</h1>
+<input type="text" id="urlInput" placeholder="Enter URL to proxy" />
+<button onclick="proxyRequest()">Go</button>
+<script>
+  function proxyRequest() {
+    const url = document.getElementById('urlInput').value;
+    if (!url) return alert('Please enter a URL');
+
+    fetch(`/proxy?url=${encodeURIComponent(url)}`)
+      .then(res => res.text())
+      .then(data => {
+        // Display raw response or handle accordingly
+        alert('Proxy request sent! Check console for response.');
+        console.log(data);
+      })
+      .catch(err => alert('Error:', err));
+  }
+</script>
+</body>
+</html>
