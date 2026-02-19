@@ -67,12 +67,13 @@
     const url = document.getElementById('urlInput').value;
     if (!url) return alert('Please enter a URL');
 
-    // Fetch the fully rendered page from your server
-    const response = await fetch(`/render?url=${encodeURIComponent(url)}`);
-    const html = await response.text();
-
-    // Load the rendered page into the iframe
-    document.getElementById('iframe').srcdoc = html;
+    try {
+      const response = await fetch(`/render?url=${encodeURIComponent(url)}`);
+      const html = await response.text();
+      document.getElementById('iframe').srcdoc = html;
+    } catch (err) {
+      alert('Error fetching page: ' + err);
+    }
   }
 </script>
 </body>
