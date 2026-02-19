@@ -1,20 +1,24 @@
 const express = require('express');
-const { createProxyMiddleware } = require('http-proxy-middleware');
+const axios = require('axios');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Proxy requests to /proxy?url=TARGET_URL
-app.use('/proxy', (req, res, next) => {
-  const targetUrl = req.query.url;
-  if (!targetUrl) {
+app.use(express.static('public'));
+
+app.get('/fetch', async (req, res) => {
+  const url = req.query.url;
+  if (!url) {
     return res.status(400).send('Missing url parameter');
   }
-  createProxyMiddleware({ target: targetUrl, changeOrigin: true })(req, res, next);
+  try {
+    const response = await axios.get(url);
+    // Send the HTML content back
+    res.send(response.data);
+  } catch (err) {
+    res.status(500).send('Error fetching URL');
+  }
 });
-
-// Serve static frontend files
-app.use(express.static('public'));
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
