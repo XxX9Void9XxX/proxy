@@ -42,9 +42,13 @@
   button:hover {
     background-color: violet;
   }
-  iframe {
+  #iframeContainer {
     flex: 1;
     width: 100%;
+  }
+  iframe {
+    width: 100%;
+    height: 100%;
     border: none;
   }
 </style>
@@ -55,21 +59,20 @@
   <input type="text" id="urlInput" placeholder="Enter URL to browse" />
   <button onclick="loadPage()">Go</button>
 </div>
-<iframe id="iframe" src=""></iframe>
+<div id="iframeContainer">
+  <iframe id="iframe" src=""></iframe>
+</div>
 <script>
-  function loadPage() {
+  async function loadPage() {
     const url = document.getElementById('urlInput').value;
     if (!url) return alert('Please enter a URL');
 
-    // Call your backend to fetch the webpage
-    fetch(`/fetch?url=${encodeURIComponent(url)}`)
-      .then(res => res.text())
-      .then(html => {
-        // Write the fetched HTML into the iframe
-        const iframe = document.getElementById('iframe');
-        iframe.srcdoc = html;
-      })
-      .catch(err => alert('Error fetching page: ' + err));
+    // Fetch the fully rendered page from your server
+    const response = await fetch(`/render?url=${encodeURIComponent(url)}`);
+    const html = await response.text();
+
+    // Load the rendered page into the iframe
+    document.getElementById('iframe').srcdoc = html;
   }
 </script>
 </body>
