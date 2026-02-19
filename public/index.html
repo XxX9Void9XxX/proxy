@@ -9,25 +9,30 @@
     background-color: #000;
     color: #fff;
     font-family: Arial, sans-serif;
+    margin: 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     height: 100vh;
-    margin: 0;
   }
   h1 {
     color: purple;
+    text-align: center;
+    margin: 10px;
+  }
+  #controls {
+    display: flex;
+    justify-content: center;
+    margin: 10px;
   }
   input[type="text"] {
     padding: 10px;
+    width: 60%;
     border: none;
     border-radius: 5px;
-    width: 300px;
-    margin-bottom: 10px;
   }
   button {
     padding: 10px 20px;
+    margin-left: 10px;
     background-color: purple;
     color: #fff;
     border: none;
@@ -37,25 +42,34 @@
   button:hover {
     background-color: violet;
   }
+  iframe {
+    flex: 1;
+    width: 100%;
+    border: none;
+  }
 </style>
 </head>
 <body>
 <h1>SSP Proxy</h1>
-<input type="text" id="urlInput" placeholder="Enter URL to proxy" />
-<button onclick="proxyRequest()">Go</button>
+<div id="controls">
+  <input type="text" id="urlInput" placeholder="Enter URL to browse" />
+  <button onclick="loadPage()">Go</button>
+</div>
+<iframe id="iframe" src=""></iframe>
 <script>
-  function proxyRequest() {
+  function loadPage() {
     const url = document.getElementById('urlInput').value;
     if (!url) return alert('Please enter a URL');
 
-    fetch(`/proxy?url=${encodeURIComponent(url)}`)
+    // Call your backend to fetch the webpage
+    fetch(`/fetch?url=${encodeURIComponent(url)}`)
       .then(res => res.text())
-      .then(data => {
-        // You can handle the response here
-        alert('Request sent! Check console for response.');
-        console.log(data);
+      .then(html => {
+        // Write the fetched HTML into the iframe
+        const iframe = document.getElementById('iframe');
+        iframe.srcdoc = html;
       })
-      .catch(err => alert('Error:', err));
+      .catch(err => alert('Error fetching page: ' + err));
   }
 </script>
 </body>
